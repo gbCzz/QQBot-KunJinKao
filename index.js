@@ -46,5 +46,10 @@ bot.on('system.online', () => {
 	console.log(`Logged in as ${bot.nickname}`);
 });
 
+//
+bot.on('message.group', (data) => {
+
+})
+
 //登录
 //bot.login(loginSettings.password);

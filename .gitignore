@@ -2,3 +2,4 @@ data
 .vscode
 node_modules
 config.ini
+test.js
