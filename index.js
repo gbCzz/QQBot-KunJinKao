@@ -65,6 +65,7 @@ bot.on('message.group', async (data) => {
 	if (data.raw_message.slice(0, 6) == '/admin') {
 		if (data.sender.user_id == loginSettings.master)
 			bot.sendGroupMsg(data.group_id, botCommand.setAdmin(data));
+		else bot.sendGroupMsg(data.group_id, '没有权限!');
 	}
 
 	if (data.raw_message == '/jrrp')
