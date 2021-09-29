@@ -1,10 +1,10 @@
 'use strict';
 
-import fs from 'fs';
 import ini from 'node-ini';
-
-import fetch from 'node-fetch';
 import { createClient } from 'oicq';
+import botCommand from './lib/botCommand.js';
+
+const botVer = 'ver 1.0.0';
 
 let loginSettings = {};
 try {
@@ -46,10 +46,46 @@ bot.on('system.online', () => {
 	console.log(`Logged in as ${bot.nickname}`);
 });
 
-//
-bot.on('message.group', (data) => {
+//群消息监听
+bot.on('message.group', async (data) => {
+	let noticeMsg = botCommand.checkNotice(data);
+	if (noticeMsg != undefined) bot.sendGroupMsg(data.group_id, noticeMsg);
 
-})
+	if (data.raw_message == '/on')
+		bot.sendGroupMsg(data.group_id, botCommand.turnOn(data));
+
+	if (data.raw_message == '/off')
+		bot.sendGroupMsg(data.group_id, botCommand.turnOff(data));
+
+	if (data.raw_message == '/help')
+		bot.sendGroupMsg(data.group_id, botCommand.help(botVer));
+
+	if (data.raw_message == '/ping') bot.sendGroupMsg(data.group_id, 'pong!');
+
+	if (data.raw_message.slice(0, 6) == '/admin') {
+		if (data.sender.user_id == loginSettings.master)
+			bot.sendGroupMsg(data.group_id, botCommand.setAdmin(data));
+	}
+
+	if (data.raw_message == '/jrrp')
+		bot.sendGroupMsg(data.group_id, botCommand.getJrrp(data));
+
+	if (data.raw_message == '/hitokoto')
+		bot.sendGroupMsg(data.group_id, await botCommand.getHitokoto());
+
+	if (data.raw_message.slice(0, 6) == '/binfo') {
+		const res = /\/binfo (\w+)/.exec(data.raw_message);
+		bot.sendGroupMsg(data.group_id, await botCommand.getBiliInfo(res[1]));
+	}
+
+	if (data.raw_message.slice(0, 5) == '/roll') {
+		bot.sendGroupMsg(data.group_id, botCommand.roll(data));
+	}
+
+	if (data.raw_message.slice(0, 7) == '/notice') {
+		bot.sendGroupMsg(data.group_id, botCommand.setNotice(data));
+	}
+});
 
 //登录
-//bot.login(loginSettings.password);
+bot.login(loginSettings.password);
