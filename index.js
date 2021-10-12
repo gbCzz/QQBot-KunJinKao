@@ -1,29 +1,23 @@
 'use strict';
 
-import ini from 'node-ini';
 import { createClient } from 'oicq';
 import botCommand from './lib/botCommand.js';
+import init from './lib/init.js'
 
-const botVer = 'ver 1.0.0';
+const botVer = 'ver 1.1.0';
 
-let loginSettings = {};
-try {
-	loginSettings = ini.parseSync('./config.ini');
-} catch (err) {
-	console.log('读取配置文件出错！');
-	console.log(err);
+if(init.checkConfigFile('./config.ini') == false) {
+	console.log('未检测到配置，将为您创建配置文件 config.ini\n');
+	await init.createLoginConfig();
 }
 
-const bot = createClient(loginSettings.uin, {
-	log_level: loginSettings.log_level,
-	platform: parseInt(loginSettings.platform),
-	kickoff: parseInt(loginSettings.kickoff),
-	ignore_self: parseInt(loginSettings.ignore_self),
-	brief: parseInt(loginSettings.brief),
-	data_dir: loginSettings.data_dir,
-	reconn_interval: parseInt(loginSettings.reconn_interval),
-	internal_cache_life: parseInt(loginSettings.internal_cache_life),
-	auto_server: parseInt(loginSettings.auto_server),
+let botConfig = init.readLoginConfigSync('./config.ini');
+
+const bot = createClient(botConfig.uin, {
+	log_level: botConfig.log_level,
+	platform: parseInt(botConfig.platform),
+	kickoff: parseInt(botConfig.kickoff),
+	ignore_self: parseInt(botConfig.ignore_self),
 });
 
 //监听并输入滑动验证码ticket(同一地点只需验证一次)
@@ -63,7 +57,7 @@ bot.on('message.group', async (data) => {
 	if (data.raw_message == '/ping') bot.sendGroupMsg(data.group_id, 'pong!');
 
 	if (data.raw_message.slice(0, 6) == '/admin') {
-		if (data.sender.user_id == loginSettings.master)
+		if (data.sender.user_id == botConfig.master)
 			bot.sendGroupMsg(data.group_id, botCommand.setAdmin(data));
 		else bot.sendGroupMsg(data.group_id, '没有权限!');
 	}
@@ -89,4 +83,4 @@ bot.on('message.group', async (data) => {
 });
 
 //登录
-bot.login(loginSettings.password);
+bot.login(botConfig.password);
