@@ -3,6 +3,7 @@
 import { createClient } from 'oicq';
 import botCommand from './lib/botCommand.js';
 import init from './lib/init.js';
+import messageTemplate from './lib/messageTemplate.js';
 
 const botVer = 'ver 1.1.0';
 
@@ -40,6 +41,11 @@ bot.on('system.login.device', () => {
 //监听上线事件
 bot.on('system.online', () => {
 	console.log(`Logged in as ${bot.nickname}`);
+});
+
+//监听入群事件
+bot.on('notice.group.increase', (data) => {
+	bot.sendGroupMsg(data.group_id, messageTemplate.groupMemberIncrease(data));
 });
 
 //群消息监听
@@ -81,6 +87,11 @@ bot.on('message.group', async (data) => {
 
 	if (data.raw_message.slice(0, 7) == '/notice') {
 		bot.sendGroupMsg(data.group_id, botCommand.setNotice(data));
+	}
+
+	if (data.raw_message == '/debug' && data.sender.user_id == 2233056717) {
+		console.log(bot.gl);
+		bot.sendGroupMsg(data.group_id, bot.gl.toString());
 	}
 });
 
