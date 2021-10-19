@@ -45,7 +45,7 @@ bot.on('system.online', () => {
 
 //监听入群事件
 bot.on('notice.group.increase', (data) => {
-	bot.sendGroupMsg(data.group_id, messageTemplate.groupMemberIncrease(data));
+	bot.sendGroupMsg(data.group_id, messageTemplate.welcomeNewMember(data));
 });
 
 //群消息监听
