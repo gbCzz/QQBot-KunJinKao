@@ -1,6 +1,7 @@
 'use strict';
 
 import { createClient } from 'oicq';
+import path from 'path';
 import botCommand from './lib/botCommand.js';
 import init from './lib/init.js';
 import messageTemplate from './lib/messageTemplate.js';
@@ -8,13 +9,15 @@ import messageTemplate from './lib/messageTemplate.js';
 const botVer = 'ver 1.1.0';
 
 (async function () {
-	if (init.checkConfigFile('./config.ini') == false) {
+	if (init.checkFileExsist(path.normalize('./config.ini')) == false) {
 		console.log('未检测到配置，将为您创建配置文件 config.ini\n');
 		await init.createLoginConfig();
 	}
 })();
 
-let botConfig = init.readLoginConfigSync('./config.ini');
+init.createDataFile();
+
+let botConfig = init.readLoginConfigSync(path.normalize('./config.ini'));
 
 const bot = createClient(botConfig.uin, {
 	log_level: botConfig.log_level,
