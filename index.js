@@ -1,6 +1,8 @@
 'use strict';
 
+import path from 'path';
 import { createClient } from 'oicq';
+
 import botCommand from './lib/botCommand.js';
 import init from './lib/init.js';
 import messageTemplate from './lib/messageTemplate.js';
@@ -8,13 +10,13 @@ import messageTemplate from './lib/messageTemplate.js';
 const botVer = 'ver 1.1.0';
 
 (async function () {
-	if (init.checkConfigFile('./config.ini') == false) {
+	if (init.checkConfigFile(path.normalize('./config.ini')) == false) {
 		console.log('未检测到配置，将为您创建配置文件 config.ini\n');
 		await init.createLoginConfig();
 	}
 })();
 
-let botConfig = init.readLoginConfigSync('./config.ini');
+let botConfig = init.readLoginConfigSync(path.normalize('./config.ini'));
 
 const bot = createClient(botConfig.uin, {
 	log_level: botConfig.log_level,
@@ -87,11 +89,6 @@ bot.on('message.group', async (data) => {
 
 	if (data.raw_message.slice(0, 7) == '/notice') {
 		bot.sendGroupMsg(data.group_id, botCommand.setNotice(data));
-	}
-
-	if (data.raw_message == '/debug' && data.sender.user_id == 2233056717) {
-		console.log(bot.gl);
-		bot.sendGroupMsg(data.group_id, bot.gl.toString());
 	}
 });
 
