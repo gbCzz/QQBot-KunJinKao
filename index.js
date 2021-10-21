@@ -2,7 +2,6 @@
 
 import path from 'path';
 import { createClient } from 'oicq';
-
 import botCommand from './lib/botCommand.js';
 import init from './lib/init.js';
 import messageTemplate from './lib/messageTemplate.js';
