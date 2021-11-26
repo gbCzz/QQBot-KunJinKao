@@ -9,11 +9,11 @@ import messageTemplate from './lib/messageTemplate.js';
 const botVer = 'ver 1.1.0';
 
 (async function () {
-	if (init.checkConfigFile(path.normalize('./config.ini')) == false) {
+	if (init.checkFileExsist(path.normalize('./config.ini')) == false) {
 		console.log('未检测到配置，将为您创建配置文件 config.ini\n');
 		await init.createLoginConfig();
 	}
-})();
+})(); 
 
 let botConfig = init.readLoginConfigSync(path.normalize('./config.ini'));
 
