@@ -6,7 +6,7 @@ import botCommand from './lib/botCommand.js';
 import init from './lib/init.js';
 import messageTemplate from './lib/messageTemplate.js';
 
-const botVer = 'ver 1.1.0';
+const botVer = 'ver 2.0.0 beta';
 
 (async function () {
 	if (init.checkFileExsist(path.normalize('./config.ini')) == false) {
