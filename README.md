@@ -162,7 +162,7 @@ node .
 给某位群成员留言，留言将在他下一次在此群发言时提醒他。  
 
 * 使用格式  
-	`/binfo <at> <message>`  
+	`/notice <at> <message>`  
 	其中：  
 	`<at>` at 你要留言的群成员  
 	`<message>` 你想要留言的内容  
