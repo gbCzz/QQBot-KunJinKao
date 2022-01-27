@@ -1,6 +1,6 @@
 'use strict';
 
-import { createClient } from 'oicq';
+import { createClient, segment } from 'oicq';
 import path from 'path';
 import botCommand from './lib/botCommand.js';
 import init from './lib/init.js';
@@ -85,6 +85,14 @@ client.on('message.group', async (data) => {
 
 		if (data.raw_message.slice(0, 7) == '/notice') {
 			client.sendGroupMsg(data.group_id, botCommand.setNotice(data));
+		}
+
+		if (data.raw_message == '/support') {
+			client.sendGroupMsg(data.group_id, [
+				'支持作者：',
+				segment.image(path.normalize('./lib/supportByWeChat.png')),
+				segment.image(path.normalize('./lib/supportByAliPay.jpg')),
+			]);
 		}
 	} catch (error) {
 		throw error;
