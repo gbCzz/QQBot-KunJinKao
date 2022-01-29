@@ -93,6 +93,13 @@ client.on('message.group', async (data) => {
 			client.sendGroupMsg(data.group_id, botCommand.setNotice(data));
 		}
 
+		if (data.raw_message == '/cat') {
+			client.sendGroupMsg(
+				data.group_id,
+				segment.image('https://thiscatdoesnotexist.com/')
+			);
+		}
+
 		if (data.raw_message == '/support') {
 			client.sendGroupMsg(data.group_id, [
 				'支持作者：',
