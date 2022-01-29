@@ -6,7 +6,7 @@ import botCommand from './lib/botCommand.js';
 import init from './lib/init.js';
 import messageTemplate from './lib/messageTemplate.js';
 
-const botVer = 'v2.0.1';
+const botVer = 'v2.2.0';
 
 if (init.checkFileExsist(path.normalize('./config.ini')) == false) {
 	console.log('未检测到配置，将为您创建配置文件 config.ini\n');
@@ -94,10 +94,29 @@ client.on('message.group', async (data) => {
 		}
 
 		if (data.raw_message == '/cat') {
+			client.sendGroupMsg(data.group_id, '获取图片中...');
 			client.sendGroupMsg(
 				data.group_id,
 				segment.image('https://thiscatdoesnotexist.com/')
 			);
+		}
+
+		if (data.raw_message == '/porpic') {
+			client.sendGroupMsg(data.group_id, '获取图片中...');
+			let pic = await botCommand.getPornography();
+			if (pic.status / 10 != 20 || pic.url == undefined) {
+				client.sendGroupMsg(data.group_id, [
+					pic.status.toString(),
+					pic.statusText,
+				]);
+			} else {
+				console.log(pic.url);
+				client.sendGroupMsg(
+					data.group_id,
+					`title: ${pic.title}\nautror: ${pic.author}\npid: ${pic.pid}\nrequestId: ${pic.requestId}`
+				);
+				client.sendGroupMsg(data.group_id, [segment.image(pic.url)]);
+			}
 		}
 
 		if (data.raw_message == '/support') {
