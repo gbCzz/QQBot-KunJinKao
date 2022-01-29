@@ -53,6 +53,12 @@ client.on('message.group', async (data) => {
 		if (data.raw_message == '/off')
 			client.sendGroupMsg(data.group_id, botCommand.turnOff(data));
 
+		if (
+			botCommand.onoffData[data.group_id] != undefined &&
+			botCommand.onoffData[data.group_id] == false
+		)
+			return;
+
 		if (data.raw_message == '/help')
 			client.sendGroupMsg(data.group_id, botCommand.help(botVer));
 
