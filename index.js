@@ -113,7 +113,7 @@ client.on('message.group', async (data) => {
 				console.log(pic.url);
 				client.sendGroupMsg(
 					data.group_id,
-					`title: ${pic.title}\nautror: ${pic.author}\npid: ${pic.pid}\nrequestId: ${pic.requestId}`
+					`status: ${pic.status} ${pic.statusText}\ntitle: ${pic.title}\nauthor: ${pic.author}\npid: ${pic.pid}\nrequestId: ${pic.requestId}`
 				);
 				client.sendGroupMsg(data.group_id, [segment.image(pic.url)]);
 			}
