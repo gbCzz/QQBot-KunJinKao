@@ -43,16 +43,19 @@ client.on('notice.group.increase', (data) => {
 
 client.on('message.group', async (data) => {
 	try {
+		// 先检查发言者有无未读留言
 		let noticeMsg = botCommand.checkNotice(data);
 		if (noticeMsg != undefined)
 			client.sendGroupMsg(data.group_id, noticeMsg);
 
+		// bot 开关操作优先级最高
 		if (data.raw_message == '/on')
 			client.sendGroupMsg(data.group_id, botCommand.turnOn(data));
 
 		if (data.raw_message == '/off')
 			client.sendGroupMsg(data.group_id, botCommand.turnOff(data));
 
+		// 判断 bot 开关状态
 		if (
 			botCommand.onoffData[data.group_id] != undefined &&
 			botCommand.onoffData[data.group_id] == false
@@ -78,6 +81,7 @@ client.on('message.group', async (data) => {
 			client.sendGroupMsg(data.group_id, await botCommand.getHitokoto());
 
 		if (data.raw_message.slice(0, 6) == '/binfo') {
+			// 正则截取 av / bv 号
 			const res = /\/binfo (\w+)/.exec(data.raw_message);
 			client.sendGroupMsg(
 				data.group_id,
@@ -104,6 +108,8 @@ client.on('message.group', async (data) => {
 		if (data.raw_message == '/porpic') {
 			client.sendGroupMsg(data.group_id, '获取图片中...');
 			let pic = await botCommand.getPornography();
+
+			// 判断状态码
 			if (pic.status / 10 != 20 || pic.url == undefined) {
 				client.sendGroupMsg(data.group_id, [
 					pic.status.toString(),
