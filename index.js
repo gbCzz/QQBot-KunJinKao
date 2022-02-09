@@ -107,7 +107,7 @@ client.on('message.group', async (data) => {
 
 		if (data.raw_message == '/porpic') {
 			client.sendGroupMsg(data.group_id, '获取图片中...');
-			let pic = await botCommand.getPornography();
+			let pic = await botCommand.getPornography(data);
 
 			// 判断状态码
 			if (pic.status / 10 != 20 || pic.url == undefined) {
@@ -115,11 +115,16 @@ client.on('message.group', async (data) => {
 					pic.status.toString(),
 					pic.statusText,
 				]);
+			} else if (pic.error != undefined) {
+				client.sendGroupMsg(
+					data.group_id,
+					'对不起，您的 koin 点数不足'
+				);
 			} else {
 				console.log(pic.url);
 				client.sendGroupMsg(
 					data.group_id,
-					`status: ${pic.status} ${pic.statusText}\ntitle: ${pic.title}\nauthor: ${pic.author}\npid: ${pic.pid}\nrequestId: ${pic.requestId}`
+					`status: ${pic.status} ${pic.statusText}\ntitle: ${pic.title}\nauthor: ${pic.author}\npid: ${pic.pid}\nrequestId: ${pic.requestId}\n ${pic.text}`
 				);
 				client.sendGroupMsg(data.group_id, [segment.image(pic.url)]);
 			}
