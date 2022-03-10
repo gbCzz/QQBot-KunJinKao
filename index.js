@@ -5,6 +5,7 @@ import path from 'path';
 import botCommand from './lib/botCommand.js';
 import init from './lib/init.js';
 import messageTemplate from './lib/messageTemplate.js';
+import { gtgCmd } from './lib/gTGame.js';
 
 const botVer = 'v2.2.0';
 
@@ -128,6 +129,10 @@ client.on('message.group', async (data) => {
 				);
 				client.sendGroupMsg(data.group_id, [segment.image(pic.url)]);
 			}
+		}
+
+		if (data.raw_message.slice(0, 4) == '/gtg') {
+			client.sendGroupMsg(data.group_id, gtgCmd(data));
 		}
 
 		if (data.raw_message == '/support') {
