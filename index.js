@@ -2,9 +2,11 @@
 
 import { createClient, segment } from 'oicq';
 import path from 'path';
+
 import botCmd from './lib/botCmd.js';
 import init from './lib/init.js';
 import msgT from './lib/msgT.js';
+import { botData } from './lib/botData.js';
 import { gtgCmd } from './lib/gTGame.js';
 
 const botVer = 'v2.2.0';
@@ -58,8 +60,9 @@ client.on('message.group', async (data) => {
 
 		// 判断 bot 开关状态
 		if (
-			botCmd.onoffData[data.group_id] != undefined &&
-			botCmd.onoffData[data.group_id] == false
+			botData.group.onoffData &&
+			botData.group.onoffData[data.group_id] &&
+			botData.group.onoffData[data.group_id] == false
 		)
 			return;
 
