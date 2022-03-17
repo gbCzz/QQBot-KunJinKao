@@ -8,6 +8,7 @@ import init from './lib/init.js';
 import msgT from './lib/msgT.js';
 import { botData } from './lib/botData.js';
 import { gtgCmd } from './lib/gTGame.js';
+import errors from './lib/errors.js';
 
 const botVer = 'v2.2.0';
 
@@ -146,6 +147,6 @@ client.on('message.group', async (data) => {
 			]);
 		}
 	} catch (error) {
-		throw error;
+		client.sendGroupMsg(data.group_id, errors.stringify(error));
 	}
 });
