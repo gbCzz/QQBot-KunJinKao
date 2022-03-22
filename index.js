@@ -10,7 +10,7 @@ import { botData } from './lib/botData.js';
 import { gtgCmd } from './lib/gTGame.js';
 import errors from './lib/errors.js';
 
-const botVer = 'v2.2.0';
+const botVer = 'v2.3.0';
 
 if (init.checkFileExsist(path.normalize('./config.ini')) == false) {
 	console.log('未检测到配置，将为您创建配置文件 config.ini\n');
