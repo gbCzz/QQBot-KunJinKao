@@ -77,12 +77,6 @@ client.on('message.group', async (data) => {
 		if (data.raw_message == '/ping')
 			client.sendGroupMsg(data.group_id, 'pong!');
 
-		if (data.raw_message.slice(0, 6) == '/admin') {
-			if (data.sender.user_id == botConfig.master)
-				client.sendGroupMsg(data.group_id, botCmd.setAdmin(data));
-			else client.sendGroupMsg(data.group_id, '没有权限!');
-		}
-
 		if (data.raw_message == '/jrrp')
 			client.sendGroupMsg(data.group_id, botCmd.getJrrp(data));
 
