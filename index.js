@@ -49,8 +49,7 @@ client.on('message.group', async (data) => {
 	try {
 		// 先检查发言者有无未读留言
 		let noticeMsg = botCmd.checkNotice(data);
-		if (noticeMsg != undefined)
-			client.sendGroupMsg(data.group_id, noticeMsg);
+		if (noticeMsg != undefined) client.sendGroupMsg(data.group_id, noticeMsg);
 
 		// bot 开关操作优先级最高
 		if (data.raw_message == '/on')
@@ -59,6 +58,11 @@ client.on('message.group', async (data) => {
 		if (data.raw_message == '/off')
 			client.sendGroupMsg(data.group_id, botCmd.turnOff(data));
 
+		if (data.raw_message == '/exit') {
+			if (!data.sender.is_owner && !data.sender.is_admin)
+				client.sendGroupMsg(data.group_id, '您无权进行此操作');
+			else client.setGroupLeave(data.group_id);
+		}
 		// 判断 bot 开关状态
 		if (
 			botData.group.onoffData &&
@@ -88,10 +92,7 @@ client.on('message.group', async (data) => {
 		if (data.raw_message.slice(0, 6) == '/binfo') {
 			// 正则截取 av / bv 号
 			const res = /\/binfo (\w+)/.exec(data.raw_message);
-			client.sendGroupMsg(
-				data.group_id,
-				await botCmd.getBiliInfo(res[1])
-			);
+			client.sendGroupMsg(data.group_id, await botCmd.getBiliInfo(res[1]));
 		}
 
 		if (data.raw_message.slice(0, 5) == '/roll') {
@@ -121,10 +122,7 @@ client.on('message.group', async (data) => {
 					pic.statusText,
 				]);
 			} else if (pic.error != undefined) {
-				client.sendGroupMsg(
-					data.group_id,
-					'对不起，您的 koin 点数不足'
-				);
+				client.sendGroupMsg(data.group_id, '对不起，您的 koin 点数不足');
 			} else {
 				console.log(pic.url);
 				client.sendGroupMsg(
