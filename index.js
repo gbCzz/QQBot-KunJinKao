@@ -9,6 +9,7 @@ import msgT from './lib/msgT.js';
 import { botData } from './lib/botData.js';
 import { gtgCmd } from './lib/gTGame.js';
 import errors from './lib/errors.js';
+import help from './lib/help.js';
 
 const botVer = 'v2.3.0';
 
@@ -71,9 +72,18 @@ client.on('message.group', async (data) => {
 		)
 			return;
 
-		if (data.raw_message == '/help')
-			client.sendGroupMsg(data.group_id, botCmd.help(botVer));
-
+		if (data.raw_message.slice(0, 5) == '/help') {
+			if (!/\/help (\w+)/.test(data.raw_message))
+				client.sendGroupMsg(data.group_id, help.help(botVer));
+			else {
+				let res = /\/help (\w+)/.exec(data.raw_message);
+				try {
+					eval(`client.sendGroupMessage(data.group_id, help.${res[1]}())`);
+				} catch (error) {
+					throw new Error(errors.errName.paraList);
+				}
+			}
+		}
 		if (data.raw_message == '/ping')
 			client.sendGroupMsg(data.group_id, 'pong!');
 
