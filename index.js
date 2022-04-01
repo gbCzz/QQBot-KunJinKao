@@ -78,7 +78,7 @@ client.on('message.group', async (data) => {
 			else {
 				let res = /\/help (\w+)/.exec(data.raw_message);
 				try {
-					eval(`client.sendGroupMessage(data.group_id, help.${res[1]}())`);
+					eval(`client.sendGroupMsg(data.group_id, help.${res[1]}())`);
 				} catch (error) {
 					throw new Error(errors.errName.paraList);
 				}
