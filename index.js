@@ -144,8 +144,8 @@ client.on('message.group', async (data) => {
 		if (data.raw_message == '/support') {
 			client.sendGroupMsg(data.group_id, [
 				'支持作者：',
-				segment.image(path.normalize('./lib/supportByWeChat.png')),
-				segment.image(path.normalize('./lib/supportByAliPay.jpg')),
+				segment.image(path.normalize('./img/supportByWeChat.png')),
+				segment.image(path.normalize('./img/supportByAliPay.jpg')),
 			]);
 		}
 	} catch (error) {
