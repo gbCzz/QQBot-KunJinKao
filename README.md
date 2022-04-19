@@ -6,7 +6,7 @@
 * 支持最低 Node 版本 14
 * 项目开源于 [GitHub](https://github.com/gbCzz/QQBot-KunJinKao)
 
-当前版本： ver 2.0.1
+当前版本： ver 2.3.0
 
 [机主部署指南](./helper/Master.md)  
 [用户命令指南](./helper/User.md)  
