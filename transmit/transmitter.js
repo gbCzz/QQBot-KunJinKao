@@ -24,13 +24,13 @@ export function transmit(data) {
 	else if (para.paraList[0] == 'mine') return mineGame(para);
 	else if (para.paraList[0] == 'help')
 		try {
-			return help[para.paraList[1]]();
+			return help[para.paraList[1]](para);
 		} catch (error) {
 			return '参数错误！';
 		}
 	else
 		try {
-			return oCmd[para.paraList[0]]();
+			return oCmd[para.paraList[0]](para);
 		} catch (error) {
 			return '命令错误！';
 		}
